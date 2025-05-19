@@ -9,7 +9,9 @@ namespace TeamTasker.API.Services.Teams.GetTeams
     
     public record GetTeamsResult(IEnumerable<Team> Teams);
 
-    internal class GetTeamsQueryHandler(ApplicationDbContext context) : IQueryHandler<GetTeamsQuery, GetTeamsResult>
+    internal class GetTeamsQueryHandler
+        (ApplicationDbContext context) 
+        : IQueryHandler<GetTeamsQuery, GetTeamsResult>
     {
         public async Task<GetTeamsResult> Handle(GetTeamsQuery request, CancellationToken cancellationToken)
         {

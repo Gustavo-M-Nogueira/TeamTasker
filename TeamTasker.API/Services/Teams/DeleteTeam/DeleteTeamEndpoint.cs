@@ -12,7 +12,7 @@ namespace TeamTasker.API.Services.Teams.DeleteTeam
         {
             app.MapDelete("/teams/{id}", async (int id, ISender sender) =>
             {
-                var result = await sender.Send(new DeleteTeamQuery(id));
+                var result = await sender.Send(new DeleteTeamCommand(id));
 
                 var response = result.Adapt<DeleteTeamResponse>();
 

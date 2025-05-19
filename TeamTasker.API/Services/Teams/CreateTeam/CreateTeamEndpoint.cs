@@ -5,7 +5,7 @@ using MediatR;
 
 namespace TeamTasker.API.Services.Teams.CreateTeam
 {
-    public record CreateTeamRequest(string Name, string Description, string? ImageUrl)
+    public record CreateTeamRequest(string Name, string Description, string ImageUrl)
         : ICommand<CreateTeamResult>;
     public record CreateTeamResponse(int Id);
 
@@ -21,7 +21,7 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
 
                 var response = result.Adapt<CreateTeamResponse>();
 
-                return new CreateTeamResponse(response.Id);
+                return Results.Created($"/teams/{response.Id}", response);
             })
                 .WithName("CreateTeam")
                 .Produces<CreateTeamResponse>(StatusCodes.Status201Created)

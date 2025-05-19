@@ -1,17 +1,17 @@
-﻿using BuildingBlocks.CQRS.Query;
+﻿using BuildingBlocks.CQRS.Command;
 using TeamTasker.API.Data;
 
 namespace TeamTasker.API.Services.Teams.DeleteTeam
 {
-    public record DeleteTeamQuery(int Id) : IQuery<DeleteTeamResult>;
+    public record DeleteTeamCommand(int Id) : ICommand<DeleteTeamResult>;
     public record DeleteTeamResult(bool IsSuccess);
     internal class DeleteTeamHandler
         (ApplicationDbContext context)
-        : IQueryHandler<DeleteTeamQuery, DeleteTeamResult>
+        : ICommandHandler<DeleteTeamCommand, DeleteTeamResult>
     {
-        public async Task<DeleteTeamResult> Handle(DeleteTeamQuery request, CancellationToken cancellationToken)
+        public async Task<DeleteTeamResult> Handle(DeleteTeamCommand command, CancellationToken cancellationToken)
         {
-            var team = await context.Teams.FindAsync(request.Id, cancellationToken);
+            var team = await context.Teams.FindAsync(command.Id, cancellationToken);
 
             if (team == null)
             {

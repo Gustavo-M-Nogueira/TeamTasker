@@ -10,7 +10,8 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
 
     public record CreateTeamResult(int Id);
 
-    internal class CreateTeamHandler(ApplicationDbContext context) 
+    internal class CreateTeamHandler
+        (ApplicationDbContext context) 
         : ICommandHandler<CreateTeamCommand, CreateTeamResult>
     {
         public async Task<CreateTeamResult> Handle(CreateTeamCommand command, CancellationToken cancellationToken)
@@ -22,7 +23,7 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
                 ImageUrl = command.ImageUrl
             };
 
-            context.Add(team);
+            context.Teams.Add(team);
             await context.SaveChangesAsync(cancellationToken);
 
             return new CreateTeamResult(team.Id);

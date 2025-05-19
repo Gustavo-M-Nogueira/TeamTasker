@@ -4,10 +4,12 @@ using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Teams.UpdateTeam
 {
-    public record UpdateTeamCommand(int Id, string Name, string Description, string ImageUrl) 
+    public record UpdateTeamCommand
+        (int Id, string Name, string Description, string ImageUrl) 
         : ICommand<UpdateTeamResult>;
     public record UpdateTeamResult(Team Team);
-    internal class UpdateTeamHandler(ApplicationDbContext context) 
+    internal class UpdateTeamHandler
+        (ApplicationDbContext context) 
         : ICommandHandler<UpdateTeamCommand, UpdateTeamResult>
     {
         public async Task<UpdateTeamResult> Handle(UpdateTeamCommand command, CancellationToken cancellationToken)
