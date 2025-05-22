@@ -1,11 +1,11 @@
-﻿namespace TeamTasker.API.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TeamTasker.API.Models
 {
-    public class User
+    public class User : IdentityUser<Guid>
     {
-        public Guid Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
         public string? ImageUrl { get; set; }
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
