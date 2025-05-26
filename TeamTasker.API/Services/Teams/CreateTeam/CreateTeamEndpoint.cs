@@ -27,7 +27,8 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
                 .Produces<CreateTeamResponse>(StatusCodes.Status201Created)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Create Team")
-                .WithDescription("Create Team");
+                .WithDescription("Create Team")
+                .RequireAuthorization();
         }
     }
 }

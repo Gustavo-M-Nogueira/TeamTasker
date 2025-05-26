@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TeamTasker.API.Services.Auth.Logout
 {
-    public record LogoutRequest(Guid UserId,  string AccessToken);
+    public record LogoutRequest(Guid UserId);
     public record LogoutResponse(bool IsSuccess);
     public class LogoutEndpoint : ICarterModule
     {
@@ -25,7 +25,8 @@ namespace TeamTasker.API.Services.Auth.Logout
                 .Produces<LogoutResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Logout")
-                .WithDescription("Logout");
+                .WithDescription("Logout")
+                .RequireAuthorization();
         }
     }
 }

@@ -23,7 +23,8 @@ namespace TeamTasker.API.Services.Tasks.GetTask
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Get Task By Id")
-                .WithDescription("Get Task By Id");
+                .WithDescription("Get Task By Id")
+                .RequireAuthorization();
         }
     }
 }

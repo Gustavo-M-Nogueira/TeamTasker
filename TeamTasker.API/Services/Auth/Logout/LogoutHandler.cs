@@ -5,7 +5,7 @@ using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Auth.Logout
 {
-    public record LogoutCommand(Guid UserId, string AccessToken) : ICommand<LogoutResult>;
+    public record LogoutCommand(Guid UserId) : ICommand<LogoutResult>;
     public record LogoutResult(bool IsSuccess);
     internal class LogoutHandler 
         (ApplicationDbContext context)

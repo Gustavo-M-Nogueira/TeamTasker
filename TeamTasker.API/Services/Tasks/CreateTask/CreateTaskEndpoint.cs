@@ -7,7 +7,7 @@ using TeamTasker.API.Enums;
 namespace TeamTasker.API.Services.Tasks.CreateTask
 {
     public record CreateTaskRequest
-        (string Name, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
+        (string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
         : ICommand<CreateTaskResult>;
     public record CreateTaskResponse(int Id);
     public class CreateTaskEndpoint : ICarterModule
@@ -28,7 +28,8 @@ namespace TeamTasker.API.Services.Tasks.CreateTask
                 .Produces<CreateTaskResponse>(StatusCodes.Status201Created)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Create Task")
-                .WithDescription("Create Task");
+                .WithDescription("Create Task")
+                .RequireAuthorization();
         }
     }
 }

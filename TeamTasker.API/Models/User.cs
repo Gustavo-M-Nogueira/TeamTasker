@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace TeamTasker.API.Models
 {
@@ -9,6 +10,9 @@ namespace TeamTasker.API.Models
         public string? ImageUrl { get; set; }
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
-        public List<Task>? Tasks { get; set; }
+        public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
+        
+        [NotMapped]
+        public List<Task> Tasks => UserTasks.Select(ut => ut.Task).ToList();
     }
 }

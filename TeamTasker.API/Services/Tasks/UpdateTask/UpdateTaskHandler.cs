@@ -5,7 +5,7 @@ using TeamTasker.API.Enums;
 namespace TeamTasker.API.Services.Tasks.UpdateTask
 {
     public record UpdateTaskCommand
-        (int Id, string Name, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)      
+        (int Id, string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)      
         : ICommand<UpdateTaskResult>; 
     public record UpdateTaskResult(Models.Task Task);
     internal class UpdateTaskHandler
@@ -21,7 +21,7 @@ namespace TeamTasker.API.Services.Tasks.UpdateTask
                 return null;
             }
             
-            task.Name = command.Name;
+            task.Title = command.Title;
             task.Description = command.Description;
             task.Priority = command.Priority;
             task.Status = command.Status;

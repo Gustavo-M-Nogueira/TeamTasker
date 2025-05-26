@@ -23,7 +23,8 @@ namespace TeamTasker.API.Services.Tasks.DeleteTask
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Delete Task")
-                .WithDescription("Delete Task");
+                .WithDescription("Delete Task")
+                .RequireAuthorization();
         }
     }
 }

@@ -23,7 +23,8 @@ namespace TeamTasker.API.Services.Tasks.GetTasks
                 .Produces<GetTasksResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Get Tasks")
-                .WithDescription("Get Tasks"); ;
+                .WithDescription("Get Tasks")
+                .RequireAuthorization();
         }
     }
 }

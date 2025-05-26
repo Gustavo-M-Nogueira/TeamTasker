@@ -5,7 +5,7 @@ using TeamTasker.API.Enums;
 namespace TeamTasker.API.Services.Tasks.CreateTask
 {
     public record CreateTaskCommand
-        (string Name, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
+        (string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
         : ICommand<CreateTaskResult>;
     public record CreateTaskResult(int Id);
 
@@ -17,7 +17,7 @@ namespace TeamTasker.API.Services.Tasks.CreateTask
         {
             var task = new Models.Task
             {
-                Name = command.Name,
+                Title = command.Title,
                 Description = command.Description,
                 Priority = command.Priority,
                 Status = command.Status,

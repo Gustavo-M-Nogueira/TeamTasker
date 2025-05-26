@@ -26,7 +26,8 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Update Team")
-                .WithDescription("Update Team");
+                .WithDescription("Update Team")
+                .RequireAuthorization();
         }
     }
 }
