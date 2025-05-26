@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.CQRS.Command;
+using FluentValidation;
 using TeamTasker.API.Data;
 using TeamTasker.API.Models;
 
@@ -9,6 +10,15 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
         : ICommand<CreateTeamResult>;
 
     public record CreateTeamResult(int Id);
+
+    public class CreateTeamCommandValidator : AbstractValidator<CreateTeamCommand>
+    {
+        public CreateTeamCommandValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty().Length(2, 40).WithMessage("Name must be between 2-40 characters");
+        }
+    }
+
 
     internal class CreateTeamHandler
         (ApplicationDbContext context) 

@@ -1,5 +1,8 @@
-﻿using BuildingBlocks.CQRS.Command;
+﻿using Azure.Core;
+using BuildingBlocks.CQRS.Command;
+using FluentValidation;
 using TeamTasker.API.Data;
+using TeamTasker.API.Exceptions.Teams;
 using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Teams.UpdateTeam
@@ -8,6 +11,16 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
         (int Id, string Name, string Description, string ImageUrl) 
         : ICommand<UpdateTeamResult>;
     public record UpdateTeamResult(Team Team);
+
+    public class UpdateTeamCommandValidator : AbstractValidator<UpdateTeamCommand>
+    {
+        public UpdateTeamCommandValidator()
+        {
+            RuleFor(c => c.Id).NotEmpty().WithMessage("Team ID is required");
+            RuleFor(c => c.Name).Length(2, 40).NotEmpty().WithMessage("Name must be beetwen 2 - 40 characters");
+        }
+    }
+
     internal class UpdateTeamHandler
         (ApplicationDbContext context) 
         : ICommandHandler<UpdateTeamCommand, UpdateTeamResult>
@@ -16,10 +29,9 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
         {
             var team = await context.Teams.FindAsync(command.Id, cancellationToken);
 
-            if (team == null)
-            {
-                return null;
-            }
+
+            if (team is null)
+                throw new TeamNotFoundException(command.Id);
 
             team.Name = command.Name;
             team.Description = command.Description;

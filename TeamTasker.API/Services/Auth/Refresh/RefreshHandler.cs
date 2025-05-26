@@ -1,7 +1,9 @@
 ﻿using BuildingBlocks.CQRS.Command;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
 using TeamTasker.API.Dtos.Response;
+using TeamTasker.API.Exceptions.Users;
 using TeamTasker.API.Models;
 using TeamTasker.API.Models.Auth;
 using TeamTasker.API.Services.Auth.Tokens;
@@ -11,6 +13,16 @@ namespace TeamTasker.API.Services.Auth.Refresh
 {
     public record RefreshCommand(Guid UserId, string RefreshToken) : ICommand<RefreshResult>;
     public record RefreshResult(string AccessToken, string RefreshToken);
+
+    public class RefreshCommandValidator : AbstractValidator<RefreshCommand>
+    {
+        public RefreshCommandValidator()
+        {
+            RuleFor(x => x.UserId).NotEmpty().WithMessage("User ID is required");
+            RuleFor(x => x.RefreshToken).NotEmpty().WithMessage("Refresh token is required");
+        }
+    }
+
     internal class RefreshHandler
         (ApplicationDbContext context,
         RefreshTokenValidator refreshTokenValidator,
@@ -22,22 +34,20 @@ namespace TeamTasker.API.Services.Auth.Refresh
             bool IsValidRefreshToken = refreshTokenValidator.Validate(command.RefreshToken);
 
             if (!IsValidRefreshToken)
-            {
-                return null;
-            }
+                throw new NotFiniteNumberException();
 
-            RefreshToken refreshToken = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == command.RefreshToken);
+            RefreshToken? refreshToken = await context.RefreshTokens.FirstOrDefaultAsync(t => t.Token == command.RefreshToken, cancellationToken);
 
-            if (refreshToken == null)
-                return null;
+            if (refreshToken is null)
+                throw new NotFiniteNumberException();
 
-            User user = await context.Users.FindAsync(refreshToken.UserId, cancellationToken);
+            User? user = await context.Users.FindAsync(refreshToken.UserId, cancellationToken);
 
-            if (user == null || user.Id != command.UserId)
-                return null;
+            if (user is null || user.Id != command.UserId)
+                throw new UserNotFoundException(command.UserId);
 
             context.Remove(refreshToken);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
 
             TokenResponseDto response = await authenticator.Authenticate(user);
 

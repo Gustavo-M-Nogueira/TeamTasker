@@ -1,7 +1,9 @@
 using System.Text;
+using BuildingBlocks.Behaviors;
+using BuildingBlocks.Exceptions.Handler;
 using Carter;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TeamTasker.API.Data;
@@ -21,7 +23,12 @@ builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssemblies(assembly);
+    config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
+
+builder.Services.AddValidatorsFromAssembly(assembly);
+
 
 // Data Services
 
@@ -61,16 +68,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+// Exceptions
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
-
-//using var scope = app.Services.CreateScope();
-//var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-//context.Database.MigrateAsync().GetAwaiter().GetResult();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCarter();
+app.UseExceptionHandler(options => { });
 
 app.Run();

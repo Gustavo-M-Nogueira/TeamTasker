@@ -1,12 +1,25 @@
 ﻿using BuildingBlocks.CQRS.Command;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
+using TeamTasker.API.Exceptions.Tasks;
+using TeamTasker.API.Exceptions.Users;
 using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Tasks.LinkUserToTask
 {
     public record LinkUsersToTaskCommand(List<Guid> UserIds, int TaskId) : ICommand<LinkUsersToTaskResult>;
     public record LinkUsersToTaskResult(bool IsSuccess);
+
+    public class LinkUsersToTaskCommandValidator : AbstractValidator<LinkUsersToTaskCommand>
+    {
+        public LinkUsersToTaskCommandValidator()
+        {
+            RuleFor(x => x.UserIds).NotEmpty().WithMessage("User ID(s) is/are required");
+            RuleFor(x => x.TaskId).NotEmpty().WithMessage("Task ID is required");
+        }
+    }
+
     internal class LinkUsersToTaskHandler
         (ApplicationDbContext context) 
         : ICommandHandler<LinkUsersToTaskCommand, LinkUsersToTaskResult>
@@ -16,8 +29,7 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
             var taskExists = await context.Tasks.AnyAsync(t => t.Id == command.TaskId, cancellationToken);
 
             if (!taskExists)
-                //"Task not found"
-                return new LinkUsersToTaskResult(false);
+                throw new TaskNotFoundException(command.TaskId);
 
             List<UserTask> userTasks = new List<UserTask>();
 
@@ -46,7 +58,7 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
             }
 
             if (!userTasks.Any())
-                return new LinkUsersToTaskResult(false);
+                throw new UsersNotFoundOrAlreadyLinkedException();
 
             context.UserTasks.AddRange(userTasks);
             await context.SaveChangesAsync(cancellationToken);

@@ -1,6 +1,8 @@
 ﻿using BuildingBlocks.CQRS.Command;
+using FluentValidation;
 using TeamTasker.API.Data;
 using TeamTasker.API.Enums;
+using TeamTasker.API.Exceptions.Tasks;
 
 namespace TeamTasker.API.Services.Tasks.UpdateTask
 {
@@ -8,6 +10,20 @@ namespace TeamTasker.API.Services.Tasks.UpdateTask
         (int Id, string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)      
         : ICommand<UpdateTaskResult>; 
     public record UpdateTaskResult(Models.Task Task);
+
+    public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
+    {
+        public UpdateTaskCommandValidator()
+        {
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Task ID is required");
+            RuleFor(x => x.Title).NotEmpty().Length(6, 40).WithMessage("Task title must be between 6-40 characters");
+            RuleFor(x => x.Description).NotEmpty().Length(6, 200).WithMessage("Task description must be between 6-200 characters");
+            RuleFor(x => x.Priority).NotEmpty().IsInEnum().WithMessage("Task priority is required");
+            RuleFor(x => x.Status).NotEmpty().IsInEnum().WithMessage("Task status is required");
+            RuleFor(x => x.TeamId).NotEmpty().WithMessage("Team ID is required");
+        }
+    }
+
     internal class UpdateTaskHandler
         (ApplicationDbContext context)
         : ICommandHandler<UpdateTaskCommand, UpdateTaskResult>
@@ -16,10 +32,8 @@ namespace TeamTasker.API.Services.Tasks.UpdateTask
         {
             var task = await context.Tasks.FindAsync(command.Id, cancellationToken);
 
-            if (task == null)
-            {
-                return null;
-            }
+            if (task is null)
+                throw new TaskNotFoundException(command.Id);
             
             task.Title = command.Title;
             task.Description = command.Description;
