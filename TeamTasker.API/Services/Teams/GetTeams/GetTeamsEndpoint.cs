@@ -11,14 +11,15 @@ namespace TeamTasker.API.Services.Teams.GetTeams
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/teams", async (ISender sender) =>
-            {
-                var result = await sender.Send(new GetTeamsQuery());
+            app.MapGet("/teams", 
+                async (ISender sender) =>
+                {
+                    var result = await sender.Send(new GetTeamsQuery());
 
-                var response = result.Adapt<GetTeamsResponse>();
+                    var response = result.Adapt<GetTeamsResponse>();
 
-                return Results.Ok(response);
-            })
+                    return Results.Ok(response);
+                })
                 .WithName("GetTeams")
                 .Produces<GetTeamsResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)

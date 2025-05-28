@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using BuildingBlocks.CQRS.Command;
+﻿using BuildingBlocks.CQRS.Command;
 using FluentValidation;
 using TeamTasker.API.Data;
 using TeamTasker.API.Exceptions.Teams;

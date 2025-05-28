@@ -8,23 +8,23 @@ using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Tasks.LinkUserToTask
 {
-    public record LinkUsersToTaskCommand(List<Guid> UserIds, int TaskId) : ICommand<LinkUsersToTaskResult>;
-    public record LinkUsersToTaskResult(bool IsSuccess);
+    public record AssignUsersToTaskCommand(List<Guid> UserIds, int TaskId) : ICommand<AssignUsersToTaskResult>;
+    public record AssignUsersToTaskResult(bool IsSuccess);
 
-    public class LinkUsersToTaskCommandValidator : AbstractValidator<LinkUsersToTaskCommand>
+    public class AssignUsersToTaskCommandValidator : AbstractValidator<AssignUsersToTaskCommand>
     {
-        public LinkUsersToTaskCommandValidator()
+        public AssignUsersToTaskCommandValidator()
         {
             RuleFor(x => x.UserIds).NotEmpty().WithMessage("User ID(s) is/are required");
             RuleFor(x => x.TaskId).NotEmpty().WithMessage("Task ID is required");
         }
     }
 
-    internal class LinkUsersToTaskHandler
+    internal class AssignUsersToTaskHandler
         (ApplicationDbContext context) 
-        : ICommandHandler<LinkUsersToTaskCommand, LinkUsersToTaskResult>
+        : ICommandHandler<AssignUsersToTaskCommand, AssignUsersToTaskResult>
     {
-        public async Task<LinkUsersToTaskResult> Handle(LinkUsersToTaskCommand command, CancellationToken cancellationToken)
+        public async Task<AssignUsersToTaskResult> Handle(AssignUsersToTaskCommand command, CancellationToken cancellationToken)
         {
             var taskExists = await context.Tasks.AnyAsync(t => t.Id == command.TaskId, cancellationToken);
 
@@ -63,7 +63,7 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
             context.UserTasks.AddRange(userTasks);
             await context.SaveChangesAsync(cancellationToken);
 
-            return new LinkUsersToTaskResult(true);
+            return new AssignUsersToTaskResult(true);
         }
     }
 }

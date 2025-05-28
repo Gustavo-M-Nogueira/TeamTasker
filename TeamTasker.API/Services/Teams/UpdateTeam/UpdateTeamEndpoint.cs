@@ -11,16 +11,17 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("teams", async (UpdateTeamRequest request, ISender sender) =>
-            {
-                var command = request.Adapt<UpdateTeamCommand>();
+            app.MapPut("teams", 
+                async (UpdateTeamRequest request, ISender sender) =>
+                {
+                    var command = request.Adapt<UpdateTeamCommand>();
 
-                var result = await sender.Send(command);
+                    var result = await sender.Send(command);
 
-                var response = result.Adapt<UpdateTeamResponse>();
+                    var response = result.Adapt<UpdateTeamResponse>();
 
-                return new UpdateTeamResponse(response.Team);
-            })
+                    return new UpdateTeamResponse(response.Team);
+                })
                 .WithName("UpdateTeam")
                 .Produces<UpdateTeamResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using TeamTasker.API.Enums;
 
 namespace TeamTasker.API.Models
 {
@@ -10,6 +11,7 @@ namespace TeamTasker.API.Models
         public string? ImageUrl { get; set; }
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
+        public UserPosition Position { get; set; }
         public List<UserTask> UserTasks { get; set; } = new List<UserTask>();
         
         [NotMapped]

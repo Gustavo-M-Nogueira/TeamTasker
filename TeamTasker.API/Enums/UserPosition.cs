@@ -1,9 +1,9 @@
 ﻿namespace TeamTasker.API.Enums
 {
-    internal enum UserPosition
+    public enum UserPosition
     {
-        NotInATeam,
-        Worker,
-        Leader
+        NotInATeam = 1,
+        Worker = 2,
+        Leader = 3
     }
 }
