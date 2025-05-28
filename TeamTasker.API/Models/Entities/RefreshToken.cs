@@ -1,4 +1,4 @@
-﻿namespace TeamTasker.API.Models.Auth
+﻿namespace TeamTasker.API.Models.Entities
 {
     public class RefreshToken
     {

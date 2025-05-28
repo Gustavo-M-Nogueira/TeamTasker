@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
 using TeamTasker.API.Exceptions.Teams;
 using TeamTasker.API.Exceptions.Users;
+using TeamTasker.API.Models.Enums;
 
 namespace TeamTasker.API.Services.Users.AddUserToTeam
 {
@@ -42,7 +43,7 @@ namespace TeamTasker.API.Services.Users.AddUserToTeam
                 throw new TeamNotFoundException(command.TeamId);
 
             user.TeamId = command.TeamId;
-            user.Position = Enums.UserPosition.Worker;
+            user.Position = UserPosition.Worker;
             await context.SaveChangesAsync(cancellationToken);
 
             return new AddUserToTeamResult(true);

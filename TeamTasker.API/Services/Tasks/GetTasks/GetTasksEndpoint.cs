@@ -1,24 +1,24 @@
-﻿using Carter;
+﻿using BuildingBlocks.Pagination;
+using Carter;
 using Mapster;
 using MediatR;
-using TeamTasker.API.Models;
 
 namespace TeamTasker.API.Services.Tasks.GetTasks
 {
-    //public record GetTasksRequest();
-    public record GetTasksResponse(IEnumerable<Models.Task> Tasks);
+    public record GetTasksResponse(PaginationResult<Models.Entities.Task> Tasks);
     public class GetTasksEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/tasks", async (ISender sender) =>
-            {
-                var result = await sender.Send(new GetTasksQuery());
+            app.MapGet("/tasks", 
+                async ([AsParameters] PaginationRequest request, ISender sender) =>
+                {
+                    var result = await sender.Send(new GetTasksQuery(request));
 
-                var response = result.Adapt<GetTasksResponse>();
+                    var response = result.Adapt<GetTasksResponse>();
 
-                return Results.Ok(response);
-            })
+                    return Results.Ok(response);
+                })
                 .WithName("GetTasks")
                 .Produces<GetTasksResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)

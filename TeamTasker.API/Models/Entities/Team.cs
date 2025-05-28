@@ -1,4 +1,4 @@
-﻿namespace TeamTasker.API.Models
+﻿namespace TeamTasker.API.Models.Entities
 {
     public class Team
     {

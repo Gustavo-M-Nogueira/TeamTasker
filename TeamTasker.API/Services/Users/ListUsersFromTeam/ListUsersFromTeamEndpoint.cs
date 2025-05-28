@@ -1,19 +1,21 @@
-﻿using Carter;
+﻿using BuildingBlocks.Pagination;
+using Carter;
 using Mapster;
 using MediatR;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.DTOs;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Users.ListUsersFromTeam
 {
-    public record ListUsersFromTeamResponse(IEnumerable<User> users);
+    public record ListUsersFromTeamResponse(PaginationResult<UserDto> users);
     public class ListUsersFromTeamEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapGet("/teams/{teamId:int}/users",
-                async (int teamId, ISender sender) =>
+                async ([AsParameters] PaginationRequest request, int teamId, ISender sender) =>
                 {
-                    var query = new ListUsersFromTeamQuery(teamId);
+                    var query = new ListUsersFromTeamQuery(teamId, request);
 
                     var result = await sender.Send(query);
 

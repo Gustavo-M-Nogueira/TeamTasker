@@ -5,7 +5,7 @@ using TeamTasker.API.Exceptions.Tasks;
 namespace TeamTasker.API.Services.Tasks.GetTask
 {
     public record GetTaskByIdQuery(int Id) : IQuery<GetTaskByIdResult>;
-    public record GetTaskByIdResult(Models.Task Task);
+    public record GetTaskByIdResult(Models.Entities.Task Task);
     internal class GetTaskByIdHandler(ApplicationDbContext context)
         : IQueryHandler<GetTaskByIdQuery, GetTaskByIdResult>
     {

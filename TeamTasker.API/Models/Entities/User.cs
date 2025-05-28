@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
-using TeamTasker.API.Enums;
+using TeamTasker.API.Models.Enums;
 
-namespace TeamTasker.API.Models
+namespace TeamTasker.API.Models.Entities
 {
     public class User : IdentityUser<Guid>
     {

@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TeamTasker.API.Models;
-using TeamTasker.API.Models.Auth;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
-        public DbSet<API.Models.Task> Tasks { get; set; }
+        public DbSet<Models.Entities.Task> Tasks { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }

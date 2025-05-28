@@ -5,7 +5,7 @@ using TeamTasker.API.Exceptions.Tasks;
 
 namespace TeamTasker.API.Services.Tasks.UpdateTaskStatus
 {
-    public record UpdateTaskStatusCommand(int TeamId, int TaskId, Enums.TaskStatus Status) : ICommand<UpdateTaskStatusResult>;
+    public record UpdateTaskStatusCommand(int TeamId, int TaskId, Models.Enums.TaskStatus Status) : ICommand<UpdateTaskStatusResult>;
     public record UpdateTaskStatusResult(bool IsSuccess);
 
     public class UpdateTaskStatusValidator : AbstractValidator<UpdateTaskStatusCommand>

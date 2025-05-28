@@ -1,7 +1,7 @@
 ﻿using Carter;
 using Mapster;
 using MediatR;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Teams.UpdateTeam
 {

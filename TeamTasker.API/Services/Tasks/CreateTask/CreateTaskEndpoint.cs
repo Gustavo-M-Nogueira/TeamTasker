@@ -2,12 +2,12 @@
 using Carter;
 using Mapster;
 using MediatR;
-using TeamTasker.API.Enums;
+using TeamTasker.API.Models.Enums;
 
 namespace TeamTasker.API.Services.Tasks.CreateTask
 {
     public record CreateTaskRequest
-        (string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
+        (string Title, string Description, TaskPriority Priority, Models.Enums.TaskStatus Status, int TeamId)
         : ICommand<CreateTaskResult>;
     public record CreateTaskResponse(int Id);
     public class CreateTaskEndpoint : ICarterModule

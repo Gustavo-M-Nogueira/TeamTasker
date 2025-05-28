@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
 using TeamTasker.API.Exceptions.Tasks;
 using TeamTasker.API.Exceptions.Users;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Tasks.LinkUserToTask
 {

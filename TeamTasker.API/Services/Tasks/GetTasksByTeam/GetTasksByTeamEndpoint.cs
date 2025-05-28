@@ -1,18 +1,19 @@
-﻿using Carter;
+﻿using BuildingBlocks.Pagination;
+using Carter;
 using Mapster;
 using MediatR;
 
 namespace TeamTasker.API.Services.Tasks.GetTasksFromTeam
 {
-    public record GetTasksByTeamResponse(IEnumerable<Models.Task> tasks);
+    public record GetTasksByTeamResponse(PaginationResult<Models.Entities.Task> tasks);
     public class GetTasksByTeamEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapGet("/teams/{teamId:int}/tasks",
-                async (int teamId, ISender sender) =>
+                async ([AsParameters] PaginationRequest request, int teamId, ISender sender) =>
                 {
-                    var query = new GetTasksByTeamQuery(teamId);
+                    var query = new GetTasksByTeamQuery(teamId, request);
 
                     var result = await sender.Send(query);
 

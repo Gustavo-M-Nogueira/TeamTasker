@@ -1,6 +1,6 @@
-﻿using TeamTasker.API.Enums;
+﻿using TeamTasker.API.Models.Enums;
 
-namespace TeamTasker.API.Models
+namespace TeamTasker.API.Models.Entities
 {
     public class Task
     {

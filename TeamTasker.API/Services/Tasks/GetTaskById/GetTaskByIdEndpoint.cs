@@ -5,7 +5,7 @@ using MediatR;
 namespace TeamTasker.API.Services.Tasks.GetTask
 {
     //public record GetTaskByIdRequest()
-    public record GetTaskByIdResponse(Models.Task Task);
+    public record GetTaskByIdResponse(Models.Entities.Task Task);
     public class GetTaskByIdEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)

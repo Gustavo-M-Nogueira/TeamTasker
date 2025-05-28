@@ -1,13 +1,13 @@
 ﻿using BuildingBlocks.CQRS.Command;
 using FluentValidation;
 using TeamTasker.API.Data;
-using TeamTasker.API.Enums;
+using TeamTasker.API.Models.Enums;
 using TeamTasker.API.Services.Tasks.UpdateTask;
 
 namespace TeamTasker.API.Services.Tasks.CreateTask
 {
     public record CreateTaskCommand
-        (string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)
+        (string Title, string Description, TaskPriority Priority, Models.Enums.TaskStatus Status, int TeamId)
         : ICommand<CreateTaskResult>;
     public record CreateTaskResult(int Id);
 
@@ -29,7 +29,7 @@ namespace TeamTasker.API.Services.Tasks.CreateTask
     {
         public async Task<CreateTaskResult> Handle(CreateTaskCommand command, CancellationToken cancellationToken)
         {
-            var task = new Models.Task
+            var task = new Models.Entities.Task
             {
                 Title = command.Title,
                 Description = command.Description,

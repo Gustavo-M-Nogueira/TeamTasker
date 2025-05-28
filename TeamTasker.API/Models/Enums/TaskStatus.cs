@@ -1,4 +1,4 @@
-﻿namespace TeamTasker.API.Enums
+﻿namespace TeamTasker.API.Models.Enums
 {
     public enum TaskStatus
     {

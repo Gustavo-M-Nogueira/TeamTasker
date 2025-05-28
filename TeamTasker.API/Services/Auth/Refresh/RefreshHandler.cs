@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
 using TeamTasker.API.Dtos.Response;
 using TeamTasker.API.Exceptions.Users;
-using TeamTasker.API.Models;
-using TeamTasker.API.Models.Auth;
+using TeamTasker.API.Models.Entities;
 using TeamTasker.API.Services.Auth.Tokens;
 using TeamTasker.API.Services.Auth.Tokens.TokenValidators;
 

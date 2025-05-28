@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.CQRS.Query;
 using TeamTasker.API.Data;
 using TeamTasker.API.Exceptions.Teams;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Teams.GetTeamById
 {

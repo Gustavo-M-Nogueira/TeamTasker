@@ -2,9 +2,9 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TeamTasker.API.Data;
-using TeamTasker.API.Enums;
 using TeamTasker.API.Exceptions.Teams;
 using TeamTasker.API.Exceptions.Users;
+using TeamTasker.API.Models.Enums;
 
 namespace TeamTasker.API.Services.Users.UpdateUserRoleInTeam
 {

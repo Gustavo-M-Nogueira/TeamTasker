@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TeamTasker.API.Services.Tasks.UpdateTaskStatus
 {
-    public record UpdateTaskStatusRequest(Enums.TaskStatus Status) : ICommand<UpdateTaskStatusResult>;
+    public record UpdateTaskStatusRequest(Models.Enums.TaskStatus Status) : ICommand<UpdateTaskStatusResult>;
     public record UpdateTaskStatusResponse(bool IsSuccess);
     public class UpdateTaskStatusEndpoint : ICarterModule
     {

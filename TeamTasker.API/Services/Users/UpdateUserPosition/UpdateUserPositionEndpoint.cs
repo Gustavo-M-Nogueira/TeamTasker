@@ -3,7 +3,7 @@ using Carter;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TeamTasker.API.Enums;
+using TeamTasker.API.Models.Enums;
 
 namespace TeamTasker.API.Services.Users.UpdateUserRoleInTeam
 {

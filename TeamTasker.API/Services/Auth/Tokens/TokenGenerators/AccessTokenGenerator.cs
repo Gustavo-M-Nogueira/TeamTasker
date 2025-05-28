@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using TeamTasker.API.Dtos;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Auth.Tokens.TokenGenerators
 {

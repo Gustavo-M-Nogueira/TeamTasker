@@ -1,15 +1,15 @@
 ﻿using BuildingBlocks.CQRS.Command;
 using FluentValidation;
 using TeamTasker.API.Data;
-using TeamTasker.API.Enums;
 using TeamTasker.API.Exceptions.Tasks;
+using TeamTasker.API.Models.Enums;
 
 namespace TeamTasker.API.Services.Tasks.UpdateTask
 {
     public record UpdateTaskCommand
-        (int Id, string Title, string Description, TaskPriority Priority, Enums.TaskStatus Status, int TeamId)      
+        (int Id, string Title, string Description, TaskPriority Priority, Models.Enums.TaskStatus Status, int TeamId)      
         : ICommand<UpdateTaskResult>; 
-    public record UpdateTaskResult(Models.Task Task);
+    public record UpdateTaskResult(Models.Entities.Task Task);
 
     public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
     {

@@ -1,20 +1,20 @@
 ﻿using Carter;
 using MediatR;
-using TeamTasker.API.Models;
 using Mapster;
+using TeamTasker.API.Models.Entities;
+using BuildingBlocks.Pagination;
 
 namespace TeamTasker.API.Services.Teams.GetTeams
 {
-    //public record GetTeamsRequest();
-    public record GetTeamsResponse(IEnumerable<Team> Teams);
+    public record GetTeamsResponse(PaginationResult<Team> Teams);
     public class GetTeamsEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapGet("/teams", 
-                async (ISender sender) =>
+                async ([AsParameters] PaginationRequest request, ISender sender) =>
                 {
-                    var result = await sender.Send(new GetTeamsQuery());
+                    var result = await sender.Send(new GetTeamsQuery(request));
 
                     var response = result.Adapt<GetTeamsResponse>();
 

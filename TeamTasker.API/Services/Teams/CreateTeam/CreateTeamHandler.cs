@@ -2,6 +2,7 @@
 using FluentValidation;
 using TeamTasker.API.Data;
 using TeamTasker.API.Models;
+using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Teams.CreateTeam
 {
