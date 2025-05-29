@@ -26,7 +26,7 @@ namespace TeamTasker.API.Services.Users.RemoveUserFromTeam
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Remove User From Team")
                 .WithDescription("Remove User From Team")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }

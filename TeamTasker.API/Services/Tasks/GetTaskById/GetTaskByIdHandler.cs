@@ -4,17 +4,17 @@ using TeamTasker.API.Exceptions.Tasks;
 
 namespace TeamTasker.API.Services.Tasks.GetTask
 {
-    public record GetTaskByIdQuery(int Id) : IQuery<GetTaskByIdResult>;
+    public record GetTaskByIdQuery(int TeamId, int TaskId) : IQuery<GetTaskByIdResult>;
     public record GetTaskByIdResult(Models.Entities.Task Task);
     internal class GetTaskByIdHandler(ApplicationDbContext context)
         : IQueryHandler<GetTaskByIdQuery, GetTaskByIdResult>
     {
-        public async Task<GetTaskByIdResult> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetTaskByIdResult> Handle(GetTaskByIdQuery query, CancellationToken cancellationToken)
         {
-            var task = await context.Tasks.FindAsync(request.Id, cancellationToken);
+            var task = await context.Tasks.FindAsync(query.TaskId, cancellationToken);
 
-            if (task is null)
-                throw new TaskNotFoundException(request.Id);
+            if (task is null || task.TeamId != query.TeamId)
+                throw new TaskNotFoundException(query.TaskId);
 
             return new GetTaskByIdResult(task);
         }

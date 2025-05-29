@@ -26,7 +26,7 @@ namespace TeamTasker.API.Services.Tasks.GetTasksFromTeam
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Get Tasks By Team")
                 .WithDescription("Get Tasks By Team")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamMember");
         }
     }
 }

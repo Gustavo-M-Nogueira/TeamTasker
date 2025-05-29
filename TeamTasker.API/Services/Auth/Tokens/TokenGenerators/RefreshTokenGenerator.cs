@@ -1,4 +1,4 @@
-﻿using TeamTasker.API.Dtos;
+﻿using TeamTasker.API.Models.DTOs;
 
 namespace TeamTasker.API.Services.Auth.Tokens.TokenGenerators
 {

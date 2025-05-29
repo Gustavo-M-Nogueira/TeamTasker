@@ -1,5 +1,5 @@
 ﻿using TeamTasker.API.Data;
-using TeamTasker.API.Dtos.Response;
+using TeamTasker.API.Models.DTOs;
 using TeamTasker.API.Models.Entities;
 using TeamTasker.API.Services.Auth.Tokens.TokenGenerators;
 

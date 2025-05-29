@@ -1,13 +1,13 @@
 ﻿using BuildingBlocks.CQRS.Command;
 using FluentValidation;
 using TeamTasker.API.Data;
-using TeamTasker.API.Models;
+using TeamTasker.API.Models.DTOs;
 using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Teams.CreateTeam
 {
     public record CreateTeamCommand
-        (string Name, string Description, string ImageUrl) 
+        (TeamRequestDto Team) 
         : ICommand<CreateTeamResult>;
 
     public record CreateTeamResult(int Id);
@@ -16,7 +16,8 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
     {
         public CreateTeamCommandValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().Length(2, 40).WithMessage("Name must be between 2-40 characters");
+            RuleFor(x => x.Team).NotEmpty();
+            RuleFor(x => x.Team.Name).NotEmpty().Length(2, 40).WithMessage("Name must be between 2-40 characters");
         }
     }
 
@@ -29,9 +30,9 @@ namespace TeamTasker.API.Services.Teams.CreateTeam
         {
             var team = new Team
             {
-                Name = command.Name,
-                Description = command.Description,
-                ImageUrl = command.ImageUrl
+                Name = command.Team.Name,
+                Description = command.Team.Description,
+                ImageUrl = command.Team.ImageUrl
             };
 
             context.Teams.Add(team);

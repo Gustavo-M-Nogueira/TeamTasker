@@ -2,21 +2,22 @@
 using FluentValidation;
 using TeamTasker.API.Data;
 using TeamTasker.API.Exceptions.Teams;
-using TeamTasker.API.Models.Entities;
+using TeamTasker.API.Models.DTOs;
 
 namespace TeamTasker.API.Services.Teams.UpdateTeam
 {
     public record UpdateTeamCommand
-        (int Id, string Name, string Description, string ImageUrl) 
+        (int TeamId, TeamRequestDto Team) 
         : ICommand<UpdateTeamResult>;
-    public record UpdateTeamResult(Team Team);
+    public record UpdateTeamResult(bool IsSuccess);
 
     public class UpdateTeamCommandValidator : AbstractValidator<UpdateTeamCommand>
     {
         public UpdateTeamCommandValidator()
         {
-            RuleFor(c => c.Id).NotEmpty().WithMessage("Team ID is required");
-            RuleFor(c => c.Name).Length(2, 40).NotEmpty().WithMessage("Name must be beetwen 2 - 40 characters");
+            RuleFor(c => c.TeamId).NotEmpty().WithMessage("Team ID is required");
+            RuleFor(c => c.Team).NotEmpty();
+            RuleFor(c => c.Team.Name).Length(2, 40).NotEmpty().WithMessage("Name must be beetwen 2 - 40 characters");
         }
     }
 
@@ -26,20 +27,19 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
     {
         public async Task<UpdateTeamResult> Handle(UpdateTeamCommand command, CancellationToken cancellationToken)
         {
-            var team = await context.Teams.FindAsync(command.Id, cancellationToken);
-
+            var team = await context.Teams.FindAsync(command.TeamId, cancellationToken);
 
             if (team is null)
-                throw new TeamNotFoundException(command.Id);
+                throw new TeamNotFoundException(command.TeamId);
 
-            team.Name = command.Name;
-            team.Description = command.Description;
-            team.ImageUrl = command.ImageUrl;
+            team.Name = command.Team.Name;
+            team.Description = command.Team.Description;
+            team.ImageUrl = command.Team.ImageUrl;
 
             context.Teams.Update(team);
             await context.SaveChangesAsync(cancellationToken);
 
-            return new UpdateTeamResult(team);
+            return new UpdateTeamResult(true);
         }
     }
 }

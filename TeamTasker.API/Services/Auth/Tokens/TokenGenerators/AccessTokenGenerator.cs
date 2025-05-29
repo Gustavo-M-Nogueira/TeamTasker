@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
-using TeamTasker.API.Dtos;
+using System.Text;
+using TeamTasker.API.Models.DTOs;
 using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Auth.Tokens.TokenGenerators
@@ -21,7 +22,6 @@ namespace TeamTasker.API.Services.Auth.Tokens.TokenGenerators
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                //new Claim(ClaimTypes.Role, user.Role),
             };
 
             return _tokenGenerator.GenerateToken(

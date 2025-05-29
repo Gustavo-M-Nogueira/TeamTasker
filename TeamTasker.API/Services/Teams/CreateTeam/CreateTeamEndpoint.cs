@@ -2,10 +2,11 @@
 using Carter;
 using Mapster;
 using MediatR;
+using TeamTasker.API.Models.DTOs;
 
 namespace TeamTasker.API.Services.Teams.CreateTeam
 {
-    public record CreateTeamRequest(string Name, string Description, string ImageUrl)
+    public record CreateTeamRequest(TeamRequestDto Team)
         : ICommand<CreateTeamResult>;
     public record CreateTeamResponse(int Id);
 

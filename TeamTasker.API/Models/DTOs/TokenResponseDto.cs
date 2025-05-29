@@ -1,4 +1,4 @@
-﻿namespace TeamTasker.API.Dtos.Response
+﻿namespace TeamTasker.API.Models.DTOs
 {
     public class TokenResponseDto
     {

@@ -1,4 +1,4 @@
-﻿namespace TeamTasker.API.Dtos
+﻿namespace TeamTasker.API.Models.DTOs
 {
     public class AuthConfig
     {

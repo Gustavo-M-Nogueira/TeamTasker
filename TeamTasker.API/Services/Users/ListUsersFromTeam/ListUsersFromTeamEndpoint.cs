@@ -28,7 +28,7 @@ namespace TeamTasker.API.Services.Users.ListUsersFromTeam
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("List Users From Team")
                 .WithDescription("List Users From Team")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamMember");
         }
     }
 }

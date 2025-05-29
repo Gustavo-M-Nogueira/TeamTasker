@@ -1,26 +1,27 @@
 ﻿using Carter;
 using Mapster;
 using MediatR;
+using TeamTasker.API.Models.DTOs;
 using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Teams.UpdateTeam
 {
-    public record UpdateTeamRequest(int Id, string Name, string Description, string ImageUrl);
-    public record UpdateTeamResponse(Team Team);
+    public record UpdateTeamRequest(TeamRequestDto Team);
+    public record UpdateTeamResponse(bool IsSuccess);
     public class UpdateTeamEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("teams", 
-                async (UpdateTeamRequest request, ISender sender) =>
+            app.MapPut("teams/{teamId:int}", 
+                async (int teamId, UpdateTeamRequest request, ISender sender) =>
                 {
-                    var command = request.Adapt<UpdateTeamCommand>();
+                    var command = new UpdateTeamCommand(teamId, request.Team);
 
                     var result = await sender.Send(command);
 
                     var response = result.Adapt<UpdateTeamResponse>();
 
-                    return new UpdateTeamResponse(response.Team);
+                    return Results.Ok(response);
                 })
                 .WithName("UpdateTeam")
                 .Produces<UpdateTeamResponse>(StatusCodes.Status200OK)
@@ -28,7 +29,7 @@ namespace TeamTasker.API.Services.Teams.UpdateTeam
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Update Team")
                 .WithDescription("Update Team")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }

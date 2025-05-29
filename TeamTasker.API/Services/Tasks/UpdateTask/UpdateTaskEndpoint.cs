@@ -1,35 +1,37 @@
-﻿using BuildingBlocks.CQRS.Command;
-using Carter;
+﻿using Carter;
 using Mapster;
 using MediatR;
-using TeamTasker.API.Models.Enums;
+using TeamTasker.API.Models.DTOs;
 
 namespace TeamTasker.API.Services.Tasks.UpdateTask
 {
-    public record UpdateTaskRequest
-        (int Id, string Name, string Description, TaskPriority Priority, Models.Enums.TaskStatus Status, int TeamId);
-    public record UpdateTaskResponse(Models.Entities.Task Task);
+    public record UpdateTaskRequest(TaskRequestDto Task);
+    public record UpdateTaskResponse(bool IsSuccess);
     public class UpdateTaskEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/tasks", async (UpdateTaskRequest request, ISender sender) =>
-            {
-                var comamnd = request.Adapt<UpdateTaskCommand>();
+            app.MapPut("teams/{teamId:int}/tasks/{taskId:int}", 
+                async (int teamId, int taskId, UpdateTaskRequest request, ISender sender) =>
+                {
+                    var comamnd = new UpdateTaskCommand(
+                        request.Task,
+                        teamId,
+                        taskId);
 
-                var result = await sender.Send(comamnd);
+                    var result = await sender.Send(comamnd);
 
-                var response = result.Adapt<UpdateTaskResponse>();
+                    var response = result.Adapt<UpdateTaskResponse>();
 
-                return Results.Ok(response);
-            })
+                    return Results.Ok(response);
+                })
                 .WithName("UpdateTask")
                 .Produces<UpdateTaskResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Update Task")
                 .WithDescription("Update Task")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }

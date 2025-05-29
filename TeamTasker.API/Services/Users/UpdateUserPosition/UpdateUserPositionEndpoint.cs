@@ -31,7 +31,7 @@ namespace TeamTasker.API.Services.Users.UpdateUserRoleInTeam
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Update User Position")
                 .WithDescription("Update User Position")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }

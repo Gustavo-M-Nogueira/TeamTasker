@@ -12,25 +12,27 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/tasks/{id}/users", async ([FromBody] AssignUsersToTaskRequest request, int id, ISender sender) =>
-            {
-                AssignUsersToTaskCommand command = new AssignUsersToTaskCommand(
-                   request.UserIds,
-                   id
-                );
+            app.MapPost("teams/{teamId}/tasks/{taskId}/users", 
+                async (int teamId, int taskId, [FromBody] AssignUsersToTaskRequest request, ISender sender) =>
+                {
+                    AssignUsersToTaskCommand command = new AssignUsersToTaskCommand(
+                       request.UserIds,
+                       teamId,
+                       taskId
+                    );
 
-                var result = await sender.Send(command);
+                    var result = await sender.Send(command);
 
-                var response = result.Adapt<AssignUsersToTaskResponse>();
+                    var response = result.Adapt<AssignUsersToTaskResponse>();
 
-                return response;
-            })
+                    return response;
+                })
                 .WithName("AssignUsersToTask")
                 .Produces<AssignUsersToTaskResponse>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .WithSummary("Assign Users To Task")
                 .WithDescription("Assign Users To Task")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }

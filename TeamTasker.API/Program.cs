@@ -4,11 +4,14 @@ using BuildingBlocks.Exceptions.Handler;
 using Carter;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using TeamTasker.API.Data;
-using TeamTasker.API.Dtos;
+using TeamTasker.API.Models.DTOs;
 using TeamTasker.API.Models.Entities;
+using TeamTasker.API.Services.Auth.Authorization.Requirements;
+using TeamTasker.API.Services.Auth.Authorization.Services;
 using TeamTasker.API.Services.Auth.Tokens;
 using TeamTasker.API.Services.Auth.Tokens.TokenGenerators;
 using TeamTasker.API.Services.Auth.Tokens.TokenValidators;
@@ -66,6 +69,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateAudience = true,
         ClockSkew = TimeSpan.Zero
     };
+});
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserAuthorizationService, UserAuthorizationService>();
+builder.Services.AddScoped<IAuthorizationHandler, TeamMemberRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, TeamLeaderRequirementHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("TeamMember", policy => policy.Requirements.Add(new TeamMemberRequirement()));
+    options.AddPolicy("TeamLeader", policy => policy.Requirements.Add(new TeamLeaderRequirement()));    
+    //options.AddPolicy("TaskCreator", policy => policy.Requirements.Add(new TaskCreatorRequirement()));
+    //options.AddPolicy("TaskAssignee", policy => policy.Requirements.Add(new TaskAssigneeRequirement()));
 });
 
 // Exceptions

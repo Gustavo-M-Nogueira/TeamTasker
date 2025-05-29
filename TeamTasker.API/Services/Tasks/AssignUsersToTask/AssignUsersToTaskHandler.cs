@@ -8,7 +8,7 @@ using TeamTasker.API.Models.Entities;
 
 namespace TeamTasker.API.Services.Tasks.LinkUserToTask
 {
-    public record AssignUsersToTaskCommand(List<Guid> UserIds, int TaskId) : ICommand<AssignUsersToTaskResult>;
+    public record AssignUsersToTaskCommand(List<Guid> UserIds, int TeamId, int TaskId) : ICommand<AssignUsersToTaskResult>;
     public record AssignUsersToTaskResult(bool IsSuccess);
 
     public class AssignUsersToTaskCommandValidator : AbstractValidator<AssignUsersToTaskCommand>
@@ -16,6 +16,7 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
         public AssignUsersToTaskCommandValidator()
         {
             RuleFor(x => x.UserIds).NotEmpty().WithMessage("User ID(s) is/are required");
+            RuleFor(x => x.TeamId).NotEmpty().WithMessage("Team ID is required");
             RuleFor(x => x.TaskId).NotEmpty().WithMessage("Task ID is required");
         }
     }
@@ -26,15 +27,15 @@ namespace TeamTasker.API.Services.Tasks.LinkUserToTask
     {
         public async Task<AssignUsersToTaskResult> Handle(AssignUsersToTaskCommand command, CancellationToken cancellationToken)
         {
-            var taskExists = await context.Tasks.AnyAsync(t => t.Id == command.TaskId, cancellationToken);
+            var task = await context.Tasks.FindAsync(command.TaskId, cancellationToken);
 
-            if (!taskExists)
+            if (task is null || task.TeamId != command.TeamId)
                 throw new TaskNotFoundException(command.TaskId);
 
             List<UserTask> userTasks = new List<UserTask>();
 
             var existingUserIds = await context.Users
-                .Where(u => command.UserIds.Contains(u.Id))
+                .Where(u => command.UserIds.Contains(u.Id) && u.TeamId == command.TeamId)
                 .Select(u => u.Id)
                 .ToListAsync(cancellationToken);
 

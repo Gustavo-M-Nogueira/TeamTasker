@@ -29,7 +29,7 @@ namespace TeamTasker.API.Services.Tasks.UpdateTaskStatus
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .WithSummary("Update Task Status")
                 .WithDescription("Update Task Status")
-                .RequireAuthorization();
+                .RequireAuthorization("TeamLeader");
         }
     }
 }
